@@ -45,6 +45,7 @@ func main() {
 	// Setup HTTP handler
 	router := mux.NewRouter()
 	moovhttp.AddCORSHandler(router)
+	addScrapeEndpoint(router)
 
 	// Start HTTP server
 	serve := &http.Server{

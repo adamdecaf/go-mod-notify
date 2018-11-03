@@ -31,12 +31,17 @@ type Modules struct {
 	versions map[string]*Version
 }
 
+func (m *Modules) ForEach(f func(string, *Version)) {
+	for path, ver := range m.versions {
+		f(path, ver)
+	}
+}
+
 // ParseFile ...
 func ParseFile(path string) (*Modules, error) {
 	if strings.Contains(path, "../") {
 		return nil, errors.New("invalid path")
 	}
-
 	bs, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, fmt.Errorf("ParseFile: problem reading %s", path)
