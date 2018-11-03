@@ -13,6 +13,7 @@ import (
 
 	"github.com/adamdecaf/godepnotify/pkg/modfetch"
 	"github.com/adamdecaf/godepnotify/pkg/modparse"
+	"github.com/adamdecaf/godepnotify/pkg/relparse"
 
 	"github.com/gorilla/mux"
 	moovhttp "github.com/moov-io/base/http"
@@ -69,4 +70,6 @@ func scrapeEndpoint(w http.ResponseWriter, r *http.Request) {
 		moovhttp.Problem(w, err)
 		return
 	}
+
+	relparse.Parse(nil)
 }
