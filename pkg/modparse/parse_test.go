@@ -40,3 +40,26 @@ func TestParse(t *testing.T) {
 		}
 	}
 }
+
+func TestParseFile(t *testing.T) {
+	mods, err := ParseFile("testdata/go.sum")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if v := len(mods.versions); v != 4 {
+		t.Errorf("got %d modules, expected %d", v, 4)
+	}
+
+	check := func(t *testing.T, path string) {
+		t.Helper()
+		_, exists := mods.versions[path]
+		if !exists {
+			t.Errorf("didn't find %s as a dependency", path)
+		}
+	}
+
+	check(t, "github.com/DHowett/go-plist")
+	check(t, "golang.org/x/net")
+	check(t, "golang.org/x/text")
+	check(t, "software.sslmate.com/src/go-pkcs12")
+}

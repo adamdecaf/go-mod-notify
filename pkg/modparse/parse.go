@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"strings"
 )
 
@@ -28,6 +29,19 @@ func (v *Version) String() string {
 type Modules struct {
 	// TODO(adam): mu sync.Mutex ?
 	versions map[string]*Version
+}
+
+// ParseFile ...
+func ParseFile(path string) (*Modules, error) {
+	if strings.Contains(path, "../") {
+		return nil, errors.New("invalid path")
+	}
+
+	bs, err := ioutil.ReadFile(path)
+	if err != nil {
+		return nil, fmt.Errorf("ParseFile: problem reading %s", path)
+	}
+	return Parse(bs)
 }
 
 // Parse ...
@@ -66,7 +80,6 @@ func Parse(data []byte) (*Modules, error) {
 			continue // TODO(adam): log?
 		}
 		// TODO(adam): can we assume path doesn't exist already?
-		fmt.Printf("%#v\n", ver)
 		mods.versions[path] = ver
 	}
 	return mods, nil
