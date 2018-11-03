@@ -26,7 +26,7 @@ func (g *GitFetcher) Load() (string, error) {
 	}
 
 	ctx, _ := context.WithTimeout(context.TODO(), time.Minute)
-	_, err = git.PlainCloneContext(ctx, dir, true, &git.CloneOptions{
+	_, err = git.PlainCloneContext(ctx, dir, false, &git.CloneOptions{
 		URL:   fmt.Sprintf("https://%s.git", g.modname),
 		Depth: 1,
 	})
