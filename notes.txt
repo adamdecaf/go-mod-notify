@@ -1,0 +1,21 @@
+oauth signin to github, gitlab, bitbucket, etc
+grab all projects, find deps, organize by project
+get notified (email) of new releases, daily, weekly, etc
+  - per org/team settings
+turn on/off specific projects, everything
+free plan - OSS repos
+paid $9.99/month for unlimited repos
+
+Worker nodes grab repo and trade deps.
+
+They pick a random 32bit int and start grabbing work from there.
+
+Work is stored indexed by random 32bit int. Worker updates a taken_at and deletes on finish. Workers check for entries older than 5mins and do those first.
+
+Workers store results and web shows those.
+Email worker.
+
+Get notified of your dependencies having a new release.
+Oauth login with GitHub, gitlab, etc
+Grab all projects, find deps and monitor new releases
+$10/month? $5?
