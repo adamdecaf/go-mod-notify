@@ -19,3 +19,27 @@ Get notified of your dependencies having a new release.
 Oauth login with GitHub, gitlab, etc
 Grab all projects, find deps and monitor new releases
 $10/month? $5?
+
+
+---
+PoC:
+ - Scrape 'Go modules' dependencies
+ - Scrape Github projects for new releases
+
+Objectives:
+ - OAuth signup (allow private repos or not)
+ - Grab project, get dependencies, track those updates
+ - Email notify (daily) on new releases (like touchpine)
+
+Depth
+ - Auth
+   - Github
+   - Gitlab
+   - Bitbucket
+
+Dependencies
+   - Go modules
+   - Dep
+   - govend
+   - ...
+---
