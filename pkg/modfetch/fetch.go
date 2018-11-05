@@ -34,7 +34,7 @@ func New(importPath string, auth *BasicAuth) (Fetcher, error) {
 		return nil, fmt.Errorf("unknown import path: %s", importPath)
 	}
 
-	// TODO(adam): prometheus metric
+	// TODO(adam): prometheus metric for time taken to scrape
 	// labels: type=$(*modfetch.GithubFetcher | tr -d '*modfetch.')
 
 	var fetcher Fetcher
