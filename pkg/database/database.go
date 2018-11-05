@@ -36,3 +36,11 @@ type Scrape struct {
 }
 
 // scrapes: project_id, error_message, work_score, started_at, finished_at
+
+type WorkerRepository interface {
+	// TODO(adam): docs, but the idea is:
+	// - one transaction
+	//   - grab N projects from `projects` table (by nonce) without 'started_at is not null and finished_at is null'
+	//   - insert new rows into scrapes
+	ScrapeableProjects() ([]*Project, error)
+}
