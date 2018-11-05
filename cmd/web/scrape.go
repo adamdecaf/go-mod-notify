@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/adamdecaf/godepnotify/pkg/modfetch"
@@ -33,28 +34,46 @@ type module struct {
 }
 
 func scrapeEndpoint(w http.ResponseWriter, r *http.Request) {
-	importPath := getImportPath(r)
+	importPath, requestId := getImportPath(r), moovhttp.GetRequestId(r)
+	logger := func(err error) {
+		if err != nil && importPath != "" {
+			// If we're returning an error let's log that iff X-Request-Id is set
+			log.Printf("requestId=%s problem getting modules for %s: %v", requestId, importPath, err)
+		}
+	}
+
 	if importPath == "" {
-		moovhttp.Problem(w, errors.New("missing import path"))
+		err := errors.New("missing import path")
+		logger(err)
+		moovhttp.Problem(w, err)
 		return
+	}
+
+	if requestId != "" {
+		log.Printf("requestId=%s getting modules for %s", requestId, importPath)
 	}
 
 	// Grab repo
 	f, err := modfetch.New(importPath, nil) // TODO(adam): BasicAuth goes here
 	if err != nil {
-		moovhttp.Problem(w, fmt.Errorf("problem grabbing %s: %v", importPath, err))
+		err = fmt.Errorf("problem grabbing %s: %v", importPath, err)
+		logger(err)
+		moovhttp.Problem(w, err)
 		return
 	}
 	dir, err := f.Load(mods.Filenames())
 	if err != nil {
-		moovhttp.Problem(w, fmt.Errorf("problem loading %s: %v", importPath, err))
+		err = fmt.Errorf("problem loading %s: %v", importPath, err)
+		logger(err)
+		moovhttp.Problem(w, err)
 		return
 	}
 
 	// Find Modules
 	mods, err := modparse.ParseFiles(dir, mods.Filenames())
 	if err != nil {
-		moovhttp.Problem(w, fmt.Errorf("problem parsing %s go.sum: %v", importPath, err))
+		err = fmt.Errorf("problem parsing %s go.sum: %v", importPath, err)
+		moovhttp.Problem(w, err)
 		return
 	}
 
@@ -67,9 +86,10 @@ func scrapeEndpoint(w http.ResponseWriter, r *http.Request) {
 		})
 	})
 	if err = json.NewEncoder(w).Encode(modules); err != nil {
+		logger(err)
 		moovhttp.Problem(w, err)
 		return
 	}
 
-	relparse.Parse(nil)
+	relparse.Parse(nil) // TODO(adam): called in cmd/worker on a schedule
 }

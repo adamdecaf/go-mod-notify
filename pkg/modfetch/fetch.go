@@ -7,6 +7,7 @@ package modfetch
 import (
 	"errors"
 	"fmt"
+	"log"
 	"strings"
 )
 
@@ -32,16 +33,25 @@ func New(importPath string, auth *BasicAuth) (Fetcher, error) {
 	if len(parts) <= 1 {
 		return nil, fmt.Errorf("unknown import path: %s", importPath)
 	}
+
+	// TODO(adam): prometheus metric
+	// labels: type=$(*modfetch.GithubFetcher | tr -d '*modfetch.')
+
+	var fetcher Fetcher
 	switch strings.ToLower(parts[0]) {
 	case "github.com":
 		if auth == nil {
 			// No auth provided, so we assume it's a public repo.
-			return &GithubFetcher{importPath}, nil
+			fetcher = &GithubFetcher{importPath}
+		} else {
+			fetcher = &GitFetcher{importPath, auth}
 		}
-		return &GitFetcher{importPath, auth}, nil
 	default:
-		return &EmptyFetcher{}, nil
+		fetcher = &EmptyFetcher{}
 	}
+	hasAuth := auth != nil
+	log.Printf("using %T for %s dependency retrieval (auth:%v)", fetcher, importPath, hasAuth)
+	return fetcher, nil
 }
 
 type EmptyFetcher struct{}

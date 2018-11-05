@@ -81,6 +81,10 @@ func (f *GithubFetcher) saveFile(dir, filename string) error {
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 { // Pause for 400, 429, 5xx
+		if resp.StatusCode == http.StatusNotFound {
+			return nil // try other filenames
+		}
+
 		timeout := time.Now().UTC().Add(3 * time.Minute)
 		atomic.StoreInt64(&githubTimeoutUntil, timeout.Unix())
 		return fmt.Errorf("github: pausing requests until %v", timeout)
