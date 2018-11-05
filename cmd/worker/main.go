@@ -21,7 +21,7 @@ var (
 	flagAdminAddr = flag.String("admin.addr", ":9090", "Admin HTTP Bind address")
 
 	flagWorkerCount    = flag.Int("worker.count", 10, "How many workers to spawn")
-	flagWorkerInterval = flag.Duration("worker.interval", 30*time.Second, "Time between checks for more scrape requests.")
+	flagWorkerInterval = flag.Duration("worker.interval", 60*time.Second, "Time between checks for more scrape requests.")
 )
 
 func main() {
