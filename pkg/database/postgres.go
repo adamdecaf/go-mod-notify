@@ -52,6 +52,8 @@ func (r *PostgresRepository) ScrapeableProjects(workScore uint32, limit int) ([]
 	}
 
 	// TODO(adam): look at p.paused_at
+	// TODO(adam): this needs to be a left outer join (we want to exclude those in scrapes and include those not in scrapes)
+	// but then also find stale projects
 	stmt, err := tx.Prepare(`select p.project_id, p.user_id, p.import_path, p.work_score, p.created_at, p.paused_at
 from projects as p inner join scrapes as s on p.project_id = s.project_id
 where s.started_at is null and s.finished_at is null -- can't be started by another worker already

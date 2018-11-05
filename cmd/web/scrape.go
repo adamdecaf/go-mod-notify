@@ -89,4 +89,6 @@ func scrapeEndpoint(w http.ResponseWriter, r *http.Request) {
 		moovhttp.Problem(w, err)
 		return
 	}
+
+	// TODO(adam): instead, write scrape into db (it'll be used as force, and to queue projects)
 }
