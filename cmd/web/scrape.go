@@ -13,6 +13,7 @@ import (
 
 	"github.com/adamdecaf/godepnotify/pkg/modfetch"
 	"github.com/adamdecaf/godepnotify/pkg/modparse"
+	"github.com/adamdecaf/godepnotify/pkg/mods"
 	"github.com/adamdecaf/godepnotify/pkg/relparse"
 
 	"github.com/gorilla/mux"
@@ -45,7 +46,7 @@ func scrapeEndpoint(w http.ResponseWriter, r *http.Request) {
 		moovhttp.Problem(w, fmt.Errorf("problem grabbing %s: %v", importPath, err))
 		return
 	}
-	dir, err := f.Load()
+	dir, err := f.Load(mods.Filenames())
 	if err != nil {
 		moovhttp.Problem(w, fmt.Errorf("problem loading %s: %v", importPath, err))
 		return

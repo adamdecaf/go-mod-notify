@@ -12,7 +12,7 @@ import (
 
 func TestGithubFetcher(t *testing.T) {
 	f := &GithubFetcher{"github.com/moov-io/auth"}
-	dir, err := f.Load()
+	dir, err := f.Load([]string{"go.sum"})
 	if err != nil {
 		t.Fatal(err)
 	}

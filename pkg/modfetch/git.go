@@ -22,7 +22,7 @@ type GitFetcher struct {
 }
 
 // Load returns a tempdir where dependency files were retrieved.
-func (f *GitFetcher) Load() (string, error) {
+func (f *GitFetcher) Load(_ []string) (string, error) {
 	dir, err := ioutil.TempDir("", "godepnotify")
 	if err != nil {
 		return "", fmt.Errorf("unable to create temp dir: %v", err)

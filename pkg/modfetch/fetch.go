@@ -11,12 +11,13 @@ import (
 )
 
 type Fetcher interface {
-	// Load takes tries to download the dependency information to a temp directory.
+	// Load takes tries to download the dependency information to a temp directory. Only files matching
+	// filenames are expected to exist if the depdency itself contains the files.
 	//
 	// This temp directory could have any supported depdency file and it could have multiple.
 	//
-	// Callers are expected to cleanup the temp directory.
-	Load() (string, error)
+	// Callers are expected to cleanup the temp directory when finished.
+	Load(filenames []string) (string, error)
 }
 
 type BasicAuth struct {
@@ -45,6 +46,6 @@ func New(importPath string, auth *BasicAuth) (Fetcher, error) {
 
 type EmptyFetcher struct{}
 
-func (f *EmptyFetcher) Load() (string, error) {
+func (f *EmptyFetcher) Load(_ []string) (string, error) {
 	return "", errors.New("EmptyLoader - nil")
 }

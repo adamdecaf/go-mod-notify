@@ -46,7 +46,10 @@ var (
 )
 
 // Load returns a tempdir where dependency files were retrieved.
-func (f *GithubFetcher) Load() (string, error) {
+func (f *GithubFetcher) Load(filenames []string) (string, error) {
+	// TODO(adam): we could use an inmem bloomfilter (key is f.modname + filenames[i])
+	// to avoid extra lookups. Flushed every 24 hours if needed?
+
 	// Check if we're supposed to be paused.
 	now := time.Now().UTC()
 	if atomic.LoadInt64(&githubTimeoutUntil) > now.Unix() {
@@ -58,12 +61,10 @@ func (f *GithubFetcher) Load() (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("github: unable to create temp dir: %v", err)
 	}
-
-	// TODO(adam): Eventually we'll support more formats, probably with a []string of filepaths.
-	filename := "go.sum"
-
-	if err := f.saveFile(dir, filename); err != nil {
-		return "", fmt.Errorf("github: problem saving file %s: %v", filename, err)
+	for i := range filenames {
+		if err := f.saveFile(dir, filenames[i]); err != nil {
+			return "", fmt.Errorf("github: problem saving file %s: %v", filenames[i], err)
+		}
 	}
 	return dir, nil
 }
