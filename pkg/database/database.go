@@ -42,5 +42,5 @@ type WorkerRepository interface {
 	// - one transaction
 	//   - grab N projects from `projects` table (by nonce) without 'started_at is not null and finished_at is null'
 	//   - insert new rows into scrapes
-	ScrapeableProjects() ([]*Project, error)
+	ScrapeableProjects(workScore uint32, limit int) ([]*Project, error)
 }

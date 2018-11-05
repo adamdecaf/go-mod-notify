@@ -5,9 +5,14 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"time"
 
+	"github.com/adamdecaf/godepnotify/pkg/database"
+	"github.com/adamdecaf/godepnotify/pkg/modfetch"
+	"github.com/adamdecaf/godepnotify/pkg/modparse"
+	"github.com/adamdecaf/godepnotify/pkg/mods"
 	"github.com/adamdecaf/godepnotify/pkg/nonce"
 )
 
@@ -21,16 +26,41 @@ import (
 // - update scrapes
 // - metric for current scrapes
 
-func spawnWorker() {
+var (
+	defaultWorkerProjectLimit = 1
+)
+
+func spawnWorker(repo database.WorkerRepository) {
 	t := time.NewTicker(*flagWorkerInterval)
 	for {
 		select {
 		case <-t.C:
 			score := nonce.New()
-			log.Printf("worker: using score %d", score)
+			projects, err := repo.ScrapeableProjects(score, defaultWorkerProjectLimit)
+			if err != nil {
+				log.Printf("worker: nonce: %d, but ran into problem: %v", score, err)
+			}
 
-			// check for new work, execute scrapes, etc
-			// ya know, stuff
+			for i := range projects {
+				// TODO(adam): log or something here?
+
+				f, err := modfetch.New(projects[i].ImportPath, nil) // TODO(adam): BasicAuth goes here
+				if err != nil {
+					log.Printf("worker: %s modfetch failed: %v", projects[i].ImportPath, err)
+					continue
+				}
+				dir, err := f.Load(mods.Filenames())
+				if err != nil {
+					log.Printf("worker: %s module load failed: %v", projects[i].ImportPath, err)
+					continue
+				}
+				mods, err := modparse.ParseFiles(dir, mods.Filenames())
+				if err != nil {
+					log.Printf("worker: %s modparse failed: %v", projects[i].ImportPath, err)
+				}
+
+				fmt.Printf("%#v\n", mods)
+			}
 		}
 	}
 }

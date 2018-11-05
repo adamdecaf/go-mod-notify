@@ -20,7 +20,7 @@ var (
 	timeZero = time.Unix(0, 0)
 )
 
-func createPostgresConnection() (*sql.DB, error) {
+func PostgresFromEnv() (*sql.DB, error) {
 	user, pass := os.Getenv("POSTGRES_USER"), os.Getenv("POSTGRES_PASS")
 	host, dbname := os.Getenv("POSTGRES_HOSTNAME"), os.Getenv("POSTGRES_DATABASE")
 	if user == "" || pass == "" || host == "" || dbname == "" {

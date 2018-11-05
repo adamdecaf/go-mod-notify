@@ -8,11 +8,11 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"os"
 	"sync"
 	"time"
 
 	"github.com/adamdecaf/godepnotify/internal"
+	"github.com/adamdecaf/godepnotify/pkg/database"
 
 	"github.com/moov-io/base/admin"
 )
@@ -42,14 +42,21 @@ func main() {
 
 	// Start worker processes
 	if *flagWorkerCount < 0 {
-		log.Printf("invalid worker count: %d", *flagWorkerCount)
-		os.Exit(1)
+		log.Fatalf("invalid worker count: %d", *flagWorkerCount)
+	}
+
+	db, err := database.PostgresFromEnv()
+	if err != nil {
+		log.Fatalf("error connecting to database: %v", err)
+	}
+	repo := &database.PostgresRepository{
+		DB: db,
 	}
 
 	wg := sync.WaitGroup{}
 	wg.Add(*flagWorkerCount)
 	for i := 0; i < *flagWorkerCount; i++ {
-		go spawnWorker()
+		go spawnWorker(repo)
 	}
 	wg.Wait() // this never completes
 
