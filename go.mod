@@ -6,6 +6,7 @@ require (
 	github.com/golang/protobuf v1.2.0 // indirect
 	github.com/gorilla/context v1.1.1 // indirect
 	github.com/gorilla/mux v1.6.2
+	github.com/lib/pq v1.0.0
 	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
 	github.com/moov-io/base v0.0.0-20181102190045-3505dd84534a
 	github.com/prometheus/client_golang v0.9.0 // indirect
