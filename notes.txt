@@ -29,15 +29,19 @@ PoC:
 Objectives:
  - OAuth signup (allow private repos or not)
  - Grab project, get dependencies, track those updates
- - Email notify (daily) on new releases (like touchpine)
+ - Email notify (daily, monthly, default: weekly, every other week) on new releases (like touchpine)
 
-Depth
+Shortcuts:
+- Let's use moov-io/auth (with OAuth disabled) for auth handling.
+  - Means we need to check x-user-id
+
+Depth:
  - Auth
    - Github
    - Gitlab
    - Bitbucket
 
-Dependencies
+Dependencies:
    - Go modules
    - Dep
    - govend

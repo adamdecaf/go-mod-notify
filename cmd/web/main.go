@@ -87,6 +87,7 @@ func main() {
 }
 
 // moovhttp.GetRequestId(r)
+// moovhttp.GetUserId(r)
 
 // moovhttp.InternalError(w, err)
 // moovhttp.Problem(w, err)
