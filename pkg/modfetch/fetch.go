@@ -19,19 +19,25 @@ type Fetcher interface {
 	Load() (string, error)
 }
 
-// New returns a Fetcher based on the import path
-func New(importPath string) (Fetcher, error) {
-	// TODO(adam): handle relative paths
+type BasicAuth struct {
+	Username string
+	Password string
+}
 
+// New returns a Fetcher based on the import path
+func New(importPath string, auth *BasicAuth) (Fetcher, error) {
+	// TODO(adam): handle relative paths
 	parts := strings.Split(importPath, "/")
 	if len(parts) <= 1 {
 		return nil, fmt.Errorf("unknown import path: %s", importPath)
 	}
 	switch strings.ToLower(parts[0]) {
 	case "github.com":
-		return &GitFetcher{
-			modname: importPath,
-		}, nil
+		if auth == nil {
+			// No auth provided, so we assume it's a public repo.
+			return &GithubFetcher{importPath}, nil
+		}
+		return &GitFetcher{importPath, auth}, nil
 	default:
 		return &EmptyFetcher{}, nil
 	}

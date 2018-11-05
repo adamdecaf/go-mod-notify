@@ -40,7 +40,7 @@ func scrapeEndpoint(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Grab repo
-	f, err := modfetch.New(importPath)
+	f, err := modfetch.New(importPath, nil) // TODO(adam): BasicAuth goes here
 	if err != nil {
 		moovhttp.Problem(w, fmt.Errorf("problem grabbing %s: %v", importPath, err))
 		return
