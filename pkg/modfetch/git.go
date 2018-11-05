@@ -18,8 +18,8 @@ type GitFetcher struct {
 	modname string
 }
 
-// Load returns a tempdir where depdency files are stored.
-func (g *GitFetcher) Load() (string, error) {
+// Load returns a tempdir where dependency files were retrieved.
+func (f *GitFetcher) Load() (string, error) {
 	dir, err := ioutil.TempDir("", "godepnotify")
 	if err != nil {
 		return "", fmt.Errorf("unable to create temp dir: %v", err)
@@ -27,11 +27,11 @@ func (g *GitFetcher) Load() (string, error) {
 
 	ctx, _ := context.WithTimeout(context.TODO(), time.Minute)
 	_, err = git.PlainCloneContext(ctx, dir, false, &git.CloneOptions{
-		URL:   fmt.Sprintf("https://%s.git", g.modname),
+		URL:   fmt.Sprintf("https://%s.git", f.modname),
 		Depth: 1,
 	})
 	if err != nil {
-		return "", fmt.Errorf("problem cloning %s: %v", g.modname, err)
+		return "", fmt.Errorf("problem cloning %s: %v", f.modname, err)
 	}
 
 	return dir, nil

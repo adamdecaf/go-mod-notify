@@ -10,8 +10,8 @@ import (
 	"testing"
 )
 
-func TestModfetch__git(t *testing.T) {
-	f := &GitFetcher{modname: "github.com/moov-io/auth"}
+func TestGithubFetcher(t *testing.T) {
+	f := &GithubFetcher{"github.com/moov-io/auth"}
 	dir, err := f.Load()
 	if err != nil {
 		t.Fatal(err)
@@ -19,12 +19,10 @@ func TestModfetch__git(t *testing.T) {
 	if dir == "" {
 		t.Errorf("no temp dir")
 	}
-
 	// We'd better see a go.sum file
 	if _, err := os.Stat(filepath.Join(dir, "go.sum")); err != nil {
-		t.Errorf("can't find go.sum: %v", err)
+		t.Errorf("couldn't find go.sum: %v", err)
 	}
-
 	if err := os.RemoveAll(dir); err != nil {
 		t.Fatal(err)
 	}
