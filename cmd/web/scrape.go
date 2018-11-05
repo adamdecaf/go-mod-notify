@@ -9,7 +9,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"path/filepath"
 
 	"github.com/adamdecaf/godepnotify/pkg/modfetch"
 	"github.com/adamdecaf/godepnotify/pkg/modparse"
@@ -53,7 +52,7 @@ func scrapeEndpoint(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Find Modules
-	mods, err := modparse.ParseFile(filepath.Join(dir, "go.sum"))
+	mods, err := modparse.ParseFiles(dir, mods.Filenames())
 	if err != nil {
 		moovhttp.Problem(w, fmt.Errorf("problem parsing %s go.sum: %v", importPath, err))
 		return

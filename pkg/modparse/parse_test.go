@@ -42,7 +42,7 @@ func TestParse(t *testing.T) {
 }
 
 func TestParseFile(t *testing.T) {
-	mods, err := ParseFile("testdata/go.sum")
+	mods, err := ParseFiles("testdata", []string{"go.sum"})
 	if err != nil {
 		t.Fatal(err)
 	}

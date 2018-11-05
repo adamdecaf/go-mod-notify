@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"path/filepath"
 	"strings"
 )
 
@@ -37,16 +38,20 @@ func (m *Modules) ForEach(f func(string, *Version)) {
 	}
 }
 
-// ParseFile ...
-func ParseFile(path string) (*Modules, error) {
-	if strings.Contains(path, "../") {
-		return nil, errors.New("invalid path")
+// ParseFiles returns the first Modules object parsed from all available dependency tools.
+func ParseFiles(dir string, paths []string) (*Modules, error) {
+	for i := range paths {
+		if strings.Contains(paths[i], "../") {
+			return nil, fmt.Errorf("invalid path %s", paths[i])
+		}
+
+		bs, err := ioutil.ReadFile(filepath.Join(dir, paths[i]))
+		if err != nil {
+			return nil, fmt.Errorf("ParseFile: problem reading %s", paths[i])
+		}
+		return Parse(bs)
 	}
-	bs, err := ioutil.ReadFile(path)
-	if err != nil {
-		return nil, fmt.Errorf("ParseFile: problem reading %s", path)
-	}
-	return Parse(bs)
+	return nil, errors.New("unable to find dependency files")
 }
 
 // Parse ...
