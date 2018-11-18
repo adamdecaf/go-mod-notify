@@ -57,7 +57,7 @@ func (f *GithubFetcher) Load(filenames []string) (string, error) {
 		return "", fmt.Errorf("github: requests paused for %v", now.Sub(timeout))
 	}
 
-	dir, err := ioutil.TempDir("", "godepnotify")
+	dir, err := ioutil.TempDir("", "gomodnotify")
 	if err != nil {
 		return "", fmt.Errorf("github: unable to create temp dir: %v", err)
 	}

@@ -11,9 +11,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/adamdecaf/godepnotify/pkg/modfetch"
-	"github.com/adamdecaf/godepnotify/pkg/modparse"
-	"github.com/adamdecaf/godepnotify/pkg/mods"
+	"github.com/adamdecaf/gomodnotify/pkg/modfetch"
+	"github.com/adamdecaf/gomodnotify/pkg/modparse"
+	"github.com/adamdecaf/gomodnotify/pkg/mods"
 
 	"github.com/gorilla/mux"
 	moovhttp "github.com/moov-io/base/http"
