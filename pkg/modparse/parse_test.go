@@ -10,14 +10,14 @@ import (
 
 func TestParse(t *testing.T) {
 	cases := map[string]*Version{
-		`github.com/DHowett/go-plist v0.0.0-20180609054337-500bd5b9081b h1:WFNhl1+1ofCWWdNFEhut77cmuMXjJYYvkEVloDdaUCI=`:               &Version{"0", "0", "0-20180609054337-500bd5b9081b"},
-		`github.com/DHowett/go-plist v0.0.0-20180609054337-500bd5b9081b/go.mod h1:5paT5ZDrOm8eAJPem2Bd+q3FTi3Gxm/U4tb2tH8YIUQ=`:        &Version{"0", "0", "0-20180609054337-500bd5b9081b"},
-		`golang.org/x/net v0.0.0-20180627171509-e514e69ffb8b h1:oXs/nlnyk1ue6g+mFGEHIuIaQIT28IgumdSIRMq2aJY=`:                          &Version{"0", "0", "0-20180627171509-e514e69ffb8b"},
-		`golang.org/x/net v0.0.0-20180627171509-e514e69ffb8b/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=`:                   &Version{"0", "0", "0-20180627171509-e514e69ffb8b"},
-		`golang.org/x/text v0.3.0 h1:g61tztE5qeGQ89tm6NTjjM9VPIm088od1l6aSorWRWg=`:                                                     &Version{"0", "3", "0"},
-		`golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=`:                                              &Version{"0", "3", "0"},
-		`software.sslmate.com/src/go-pkcs12 v0.0.0-20180114231543-2291e8f0f237 h1:iAEkCBPbRaflBgZ7o9gjVUuWuvWeV4sytFWg9o+Pj2k=`:        &Version{"0", "0", "0-20180114231543-2291e8f0f237"},
-		`software.sslmate.com/src/go-pkcs12 v0.0.0-20180114231543-2291e8f0f237/go.mod h1:/xvNRWUqm0+/ZMiF4EX00vrSCMsE4/NHb+Pt3freEeQ=`: &Version{"0", "0", "0-20180114231543-2291e8f0f237"},
+		`github.com/DHowett/go-plist v0.0.0-20180609054337-500bd5b9081b h1:WFNhl1+1ofCWWdNFEhut77cmuMXjJYYvkEVloDdaUCI=`:               {"0", "0", "0-20180609054337-500bd5b9081b"},
+		`github.com/DHowett/go-plist v0.0.0-20180609054337-500bd5b9081b/go.mod h1:5paT5ZDrOm8eAJPem2Bd+q3FTi3Gxm/U4tb2tH8YIUQ=`:        {"0", "0", "0-20180609054337-500bd5b9081b"},
+		`golang.org/x/net v0.0.0-20180627171509-e514e69ffb8b h1:oXs/nlnyk1ue6g+mFGEHIuIaQIT28IgumdSIRMq2aJY=`:                          {"0", "0", "0-20180627171509-e514e69ffb8b"},
+		`golang.org/x/net v0.0.0-20180627171509-e514e69ffb8b/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=`:                   {"0", "0", "0-20180627171509-e514e69ffb8b"},
+		`golang.org/x/text v0.3.0 h1:g61tztE5qeGQ89tm6NTjjM9VPIm088od1l6aSorWRWg=`:                                                     {"0", "3", "0"},
+		`golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=`:                                              {"0", "3", "0"},
+		`software.sslmate.com/src/go-pkcs12 v0.0.0-20180114231543-2291e8f0f237 h1:iAEkCBPbRaflBgZ7o9gjVUuWuvWeV4sytFWg9o+Pj2k=`:        {"0", "0", "0-20180114231543-2291e8f0f237"},
+		`software.sslmate.com/src/go-pkcs12 v0.0.0-20180114231543-2291e8f0f237/go.mod h1:/xvNRWUqm0+/ZMiF4EX00vrSCMsE4/NHb+Pt3freEeQ=`: {"0", "0", "0-20180114231543-2291e8f0f237"},
 	}
 	for k, v := range cases {
 		mods, err := Parse([]byte(k))
