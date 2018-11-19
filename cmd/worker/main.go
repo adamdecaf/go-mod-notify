@@ -11,8 +11,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/adamdecaf/gomodnotify/internal"
-	"github.com/adamdecaf/gomodnotify/pkg/database"
+	"github.com/GoModNotify/go-mod-notify"
+	"github.com/GoModNotify/go-mod-notify/pkg/database"
 
 	"github.com/moov-io/base/admin"
 )
@@ -27,7 +27,7 @@ var (
 func main() {
 	flag.Parse()
 
-	log.Printf("Starting gomodnotify/worker:%s\n", internal.Version)
+	log.Printf("Starting go-mod-notify/worker:%s\n", godepnotify.Version)
 
 	// Start admin HTTP server
 	adminServer := admin.NewServer(*flagAdminAddr)

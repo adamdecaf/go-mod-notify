@@ -23,7 +23,7 @@ type GitFetcher struct {
 
 // Load returns a tempdir where dependency files were retrieved.
 func (f *GitFetcher) Load(_ []string) (string, error) {
-	dir, err := ioutil.TempDir("", "gomodnotify")
+	dir, err := ioutil.TempDir("", "modfetch-git")
 	if err != nil {
 		return "", fmt.Errorf("unable to create temp dir: %v", err)
 	}

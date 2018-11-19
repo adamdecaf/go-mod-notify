@@ -64,7 +64,7 @@ limit ?`)
 	if err != nil {
 		return nil, fmt.Errorf("postgres: ScrapeableProjects: problem with prepare: %v", err)
 	}
-	// TODO(adam): stmt.Close() also needed?
+	defer stmt.Close()
 
 	oldEnough := time.Now().Add(minimumRescrapeTime)
 	rows, err := tx.Query(fmt.Sprintf("%d", workScore), workScore, oldEnough, limit)

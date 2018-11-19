@@ -49,7 +49,9 @@ func ParseFiles(dir string, paths []string) (*Modules, error) {
 		if err != nil {
 			return nil, fmt.Errorf("ParseFile: problem reading %s", paths[i])
 		}
-		return Parse(bs)
+		if len(bs) > 0 {
+			return Parse(bs)
+		}
 	}
 	return nil, errors.New("unable to find dependency files")
 }
@@ -60,8 +62,10 @@ func Parse(data []byte) (*Modules, error) {
 		return nil, errors.New("no go.sum data provided")
 	}
 
-	line, lineno := make([]byte, 0), 0
-	mods := &Modules{versions: make(map[string]*Version, 0)}
+	var line []byte
+	lineno := 0
+
+	mods := &Modules{versions: make(map[string]*Version)}
 	for {
 		// Break if we've gone past some really high limit
 		lineno++
@@ -75,6 +79,12 @@ func Parse(data []byte) (*Modules, error) {
 			line, data = data, nil
 		} else {
 			line, data = data[:i], data[i+1:]
+		}
+		line = bytes.TrimSpace(line)
+
+		// skip empty lines
+		if len(line) == 0 {
+			continue
 		}
 
 		// split at ' '

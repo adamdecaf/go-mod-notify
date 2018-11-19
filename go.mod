@@ -1,4 +1,4 @@
-module github.com/adamdecaf/gomodnotify
+module github.com/GoModNotify/go-mod-notify
 
 require (
 	github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973 // indirect

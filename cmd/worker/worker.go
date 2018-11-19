@@ -9,11 +9,11 @@ import (
 	"log"
 	"time"
 
-	"github.com/adamdecaf/gomodnotify/pkg/database"
-	"github.com/adamdecaf/gomodnotify/pkg/modfetch"
-	"github.com/adamdecaf/gomodnotify/pkg/modparse"
-	"github.com/adamdecaf/gomodnotify/pkg/mods"
-	"github.com/adamdecaf/gomodnotify/pkg/nonce"
+	"github.com/GoModNotify/go-mod-notify/pkg/database"
+	"github.com/GoModNotify/go-mod-notify/pkg/modfetch"
+	"github.com/GoModNotify/go-mod-notify/pkg/modparse"
+	"github.com/GoModNotify/go-mod-notify/pkg/mods"
+	"github.com/GoModNotify/go-mod-notify/pkg/nonce"
 )
 
 // worker:
@@ -32,35 +32,32 @@ var (
 
 func spawnWorker(repo database.WorkerRepository) {
 	t := time.NewTicker(*flagWorkerInterval)
-	for {
-		select {
-		case <-t.C:
-			score := nonce.New()
-			projects, err := repo.ScrapeableProjects(score, defaultWorkerProjectLimit)
+	for range t.C {
+		score := nonce.New()
+		projects, err := repo.ScrapeableProjects(score, defaultWorkerProjectLimit)
+		if err != nil {
+			log.Printf("worker: nonce: %d, but ran into problem: %v", score, err)
+		}
+
+		for i := range projects {
+			// TODO(adam): log or something here?
+
+			f, err := modfetch.New(projects[i].ImportPath, nil) // TODO(adam): BasicAuth goes here
 			if err != nil {
-				log.Printf("worker: nonce: %d, but ran into problem: %v", score, err)
+				log.Printf("worker: %s modfetch failed: %v", projects[i].ImportPath, err)
+				continue
+			}
+			dir, err := f.Load(mods.Filenames())
+			if err != nil {
+				log.Printf("worker: %s module load failed: %v", projects[i].ImportPath, err)
+				continue
+			}
+			mods, err := modparse.ParseFiles(dir, mods.Filenames())
+			if err != nil {
+				log.Printf("worker: %s modparse failed: %v", projects[i].ImportPath, err)
 			}
 
-			for i := range projects {
-				// TODO(adam): log or something here?
-
-				f, err := modfetch.New(projects[i].ImportPath, nil) // TODO(adam): BasicAuth goes here
-				if err != nil {
-					log.Printf("worker: %s modfetch failed: %v", projects[i].ImportPath, err)
-					continue
-				}
-				dir, err := f.Load(mods.Filenames())
-				if err != nil {
-					log.Printf("worker: %s module load failed: %v", projects[i].ImportPath, err)
-					continue
-				}
-				mods, err := modparse.ParseFiles(dir, mods.Filenames())
-				if err != nil {
-					log.Printf("worker: %s modparse failed: %v", projects[i].ImportPath, err)
-				}
-
-				fmt.Printf("%#v\n", mods)
-			}
+			fmt.Printf("%#v\n", mods)
 		}
 	}
 }
