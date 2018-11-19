@@ -5,7 +5,6 @@
 package modparse
 
 import (
-	"bytes"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -38,6 +37,10 @@ func (m *Modules) ForEach(f func(string, *Version)) {
 	}
 }
 
+func (m *Modules) modulesFound() bool {
+	return len(m.versions) > 0
+}
+
 // ParseFiles returns the first Modules object parsed from all available dependency tools.
 func ParseFiles(dir string, paths []string) (*Modules, error) {
 	for i := range paths {
@@ -62,47 +65,22 @@ func Parse(data []byte) (*Modules, error) {
 		return nil, errors.New("no go.sum data provided")
 	}
 
-	var line []byte
-	lineno := 0
-
-	mods := &Modules{versions: make(map[string]*Version)}
-	for {
-		// Break if we've gone past some really high limit
-		lineno++
-		if lineno > 50000 {
-			break // TODO(adam): log, or something
-		}
-
-		// Read for \n
-		i := bytes.IndexByte(data, '\n')
-		if i < 0 {
-			line, data = data, nil
-		} else {
-			line, data = data[:i], data[i+1:]
-		}
-		line = bytes.TrimSpace(line)
-
-		// skip empty lines
-		if len(line) == 0 {
-			continue
-		}
-
-		// split at ' '
-		parts := strings.Fields(string(line))
-		if len(parts) < 2 {
-			continue // empty line
-		}
-
-		// first two parts should be a path and semver
-		path, version := parts[0], parts[1]
-		ver, err := semver(version)
-		if err != nil {
-			continue // TODO(adam): log?
-		}
-		// TODO(adam): can we assume path doesn't exist already?
-		mods.versions[path] = ver
+	// Attempt parsing with each dependency tool in preference order.
+	// Note: Do not change this order as we quit once parsing finds modules.
+	if mods := parseGoSum(cp(data)); mods.modulesFound() {
+		return mods, nil
 	}
-	return mods, nil
+	if mods := parseDep(cp(data)); mods.modulesFound() {
+		return mods, nil
+	}
+
+	return nil, errors.New("No Go dependency management files found")
+}
+
+func cp(data []byte) []byte {
+	bs := make([]byte, len(data), len(data))
+	copy(bs, data)
+	return bs
 }
 
 // Example: v0.0.0-20180609054337-500bd5b9081b

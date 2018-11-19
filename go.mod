@@ -9,6 +9,7 @@ require (
 	github.com/lib/pq v1.0.0
 	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
 	github.com/moov-io/base v0.0.0-20181114002058-e916e72de9de
+	github.com/pelletier/go-toml v1.2.0
 	github.com/prometheus/client_golang v0.9.1 // indirect
 	github.com/prometheus/client_model v0.0.0-20180712105110-5c3871d89910 // indirect
 	github.com/prometheus/common v0.0.0-20181116084131-1f2c4f3cd6db // indirect
