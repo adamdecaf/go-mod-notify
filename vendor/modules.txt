@@ -7,6 +7,11 @@ github.com/emirpasic/gods/lists/arraylist
 github.com/emirpasic/gods/trees
 github.com/emirpasic/gods/utils
 github.com/emirpasic/gods/lists
+# github.com/go-kit/kit v0.8.0
+github.com/go-kit/kit/log
+github.com/go-kit/kit/metrics
+# github.com/go-logfmt/logfmt v0.3.0
+github.com/go-logfmt/logfmt
 # github.com/golang/protobuf v1.2.0
 github.com/golang/protobuf/proto
 # github.com/gorilla/context v1.1.1
@@ -17,22 +22,30 @@ github.com/gorilla/mux
 github.com/jbenet/go-context/io
 # github.com/kevinburke/ssh_config v0.0.0-20180830205328-81db2a75821e
 github.com/kevinburke/ssh_config
+# github.com/kr/logfmt v0.0.0-20140226030751-b84e30acd515
+github.com/kr/logfmt
+# github.com/lib/pq v1.0.0
+github.com/lib/pq
+github.com/lib/pq/oid
 # github.com/matttproud/golang_protobuf_extensions v1.0.1
 github.com/matttproud/golang_protobuf_extensions/pbutil
 # github.com/mitchellh/go-homedir v1.0.0
 github.com/mitchellh/go-homedir
-# github.com/moov-io/base v0.0.0-20181102190045-3505dd84534a
+# github.com/moov-io/base v0.0.0-20181114002058-e916e72de9de
 github.com/moov-io/base/admin
 github.com/moov-io/base/http
+github.com/moov-io/base/idempotent
 # github.com/pelletier/go-buffruneio v0.2.0
 github.com/pelletier/go-buffruneio
-# github.com/prometheus/client_golang v0.9.0
+# github.com/pelletier/go-toml v1.2.0
+github.com/pelletier/go-toml
+# github.com/prometheus/client_golang v0.9.1
 github.com/prometheus/client_golang/prometheus/promhttp
 github.com/prometheus/client_golang/prometheus
 github.com/prometheus/client_golang/prometheus/internal
 # github.com/prometheus/client_model v0.0.0-20180712105110-5c3871d89910
 github.com/prometheus/client_model/go
-# github.com/prometheus/common v0.0.0-20181020173914-7e9e6cabbd39
+# github.com/prometheus/common v0.0.0-20181116084131-1f2c4f3cd6db
 github.com/prometheus/common/expfmt
 github.com/prometheus/common/model
 github.com/prometheus/common/internal/bitbucket.org/ww/goautoneg
@@ -82,6 +95,7 @@ gopkg.in/src-d/go-billy.v4/helper/chroot
 gopkg.in/src-d/go-billy.v4/helper/polyfill
 # gopkg.in/src-d/go-git.v4 v4.7.1
 gopkg.in/src-d/go-git.v4
+gopkg.in/src-d/go-git.v4/plumbing/transport/http
 gopkg.in/src-d/go-git.v4/config
 gopkg.in/src-d/go-git.v4/internal/revision
 gopkg.in/src-d/go-git.v4/plumbing
@@ -107,19 +121,18 @@ gopkg.in/src-d/go-git.v4/utils/merkletrie
 gopkg.in/src-d/go-git.v4/utils/merkletrie/filesystem
 gopkg.in/src-d/go-git.v4/utils/merkletrie/index
 gopkg.in/src-d/go-git.v4/utils/merkletrie/noder
+gopkg.in/src-d/go-git.v4/plumbing/format/pktline
+gopkg.in/src-d/go-git.v4/plumbing/transport/internal/common
 gopkg.in/src-d/go-git.v4/plumbing/format/config
 gopkg.in/src-d/go-git.v4/utils/binary
 gopkg.in/src-d/go-git.v4/plumbing/format/idxfile
 gopkg.in/src-d/go-git.v4/plumbing/format/diff
-gopkg.in/src-d/go-git.v4/plumbing/format/pktline
 gopkg.in/src-d/go-git.v4/plumbing/transport/file
 gopkg.in/src-d/go-git.v4/plumbing/transport/git
-gopkg.in/src-d/go-git.v4/plumbing/transport/http
 gopkg.in/src-d/go-git.v4/plumbing/transport/ssh
 gopkg.in/src-d/go-git.v4/plumbing/format/objfile
 gopkg.in/src-d/go-git.v4/storage/filesystem/dotgit
 gopkg.in/src-d/go-git.v4/utils/merkletrie/internal/frame
-gopkg.in/src-d/go-git.v4/plumbing/transport/internal/common
 gopkg.in/src-d/go-git.v4/plumbing/transport/server
 # gopkg.in/warnings.v0 v0.1.2
 gopkg.in/warnings.v0
