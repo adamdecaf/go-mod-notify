@@ -9,11 +9,11 @@ import (
 	"log"
 	"time"
 
-	"github.com/adamdecaf/gomodnotify/pkg/database"
-	"github.com/adamdecaf/gomodnotify/pkg/modfetch"
-	"github.com/adamdecaf/gomodnotify/pkg/modparse"
-	"github.com/adamdecaf/gomodnotify/pkg/mods"
-	"github.com/adamdecaf/gomodnotify/pkg/nonce"
+	"github.com/GoModNotify/go-mod-notify/pkg/database"
+	"github.com/GoModNotify/go-mod-notify/pkg/modfetch"
+	"github.com/GoModNotify/go-mod-notify/pkg/modparse"
+	"github.com/GoModNotify/go-mod-notify/pkg/mods"
+	"github.com/GoModNotify/go-mod-notify/pkg/nonce"
 )
 
 // worker:
